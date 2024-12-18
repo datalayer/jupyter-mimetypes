@@ -25,19 +25,21 @@ pip install jupyter_reprs
 
 Example to get variable from a kernel and convert it back to the python object.
 
+> That example uses the [kernel client](https://github.com/datalayer/jupyter-kernel-client).
+
 ```python
 from jupyter_reprs import DEFAULT_DATA_MIMETYPE, mimebundle_to_object
 
-with KernelClient(server_url=f"http://localhost:{port}", token=token) as kernel:
-        kernel.execute(f"""import jupyter_reprs
+with KernelClient(server_url=f"http://localhost:8888", token=SERVER_TOKEN) as kernel:
+    kernel.execute(f"""import jupyter_reprs
 import pandas as pd
 df = pd.DataFrame(
     {data}
 )""")
 
-        values = kernel.get_variable("df", DEFAULT_DATA_MIMETYPE)
+    values = kernel.get_variable("df", DEFAULT_DATA_MIMETYPE)
 
-    obj = mimebundle_to_object(values)
+obj = mimebundle_to_object(values)
 ```
 
 ## Uninstall
