@@ -1,3 +1,7 @@
+# Copyright (c) 2023-2024 Datalayer, Inc.
+#
+# BSD 3-Clause License
+
 import pandas as pd
 from jupyter_kernel_client import KernelClient
 
