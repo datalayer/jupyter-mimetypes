@@ -2,4 +2,4 @@
 #
 # BSD 3-Clause License
 
-"""Python unit tests for jupyter_reprs."""
+"""Python unit tests for jupyter_mimetypes."""
