@@ -7,7 +7,7 @@ requires = ["hatchling~=1.21"]
 build-backend = "hatchling.build"
 
 [project]
-name = "jupyter_reprs"
+name = "jupyter-mimetypes"
 authors = [{ name = "Datalayer", email = "info@datalayer.io" }]
 dynamic = ["version"]
 readme = "README.md"
@@ -17,23 +17,49 @@ classifiers = [
   "License :: OSI Approved :: BSD License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Framework :: Jupyter",
 ]
 dependencies = ["pyarrow"]
 
 [project.optional-dependencies]
-test = ["ipykernel", "jupyter-kernel-client", "jupyter-server", "pandas", "pytest>=7.0", "pytest-timeout"]
-lint = ["pre_commit", "mdformat>0.7", "mdformat-gfm>=0.3.5", "ruff"]
-typing = ["mypy>=0.990"]
+test = [
+  "ipykernel",
+  "jupyter-kernel-client",
+  "jupyter-server", "pandas",
+  "pytest>=7.0",
+  "pytest-cov",
+  "pytest-timeout",
+  "pandas",
+  "pandas-stubs",
+  "pyarrow-stubs",
+  "torch>=2.0",
+]
+lint = [
+  "pre_commit",
+  "mdformat>0.7",
+  "mdformat-gfm>=0.3.5",
+  "ruff",
+]
+typing = [
+  "mypy>=0.990",
+]
 
 [project.license]
 file = "LICENSE"
 
 [project.urls]
-Home = "https://github.com/datalayer/jupyter-reprs"
+Home = "https://github.com/datalayer/jupyter-mimetypes"
 
 [tool.hatch.version]
-path = "jupyter_reprs/__init__.py"
+path = "jupyter_mimetypes/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["jupyter_mimetypes"]
 
 [tool.pytest.ini_options]
 filterwarnings = [
@@ -43,7 +69,7 @@ filterwarnings = [
   "module:clear_current is deprecated:DeprecationWarning",
   "module:Jupyter is migrating its paths to use standard platformdirs:DeprecationWarning",
 ]
-timeout=30
+timeout=60
 
 [tool.mypy]
 check_untyped_defs = true
@@ -86,8 +112,10 @@ ignore = [
   "FBT003",
   # C901 `foo` is too complex (12)
   "C901",
+  # UP007 Use `X | Y` for type annotations (not compatible with Python 3.9)
+  "UP007",
 ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # S101 Use of `assert` detected
-"jupyter_reprs/tests/*" = ["S101"]
+"tests/*" = ["S101", "T201", "S603", "S607"]

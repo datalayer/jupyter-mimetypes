@@ -10,6 +10,7 @@ header:
     - '**/*.json'
     - '**/*.yaml'
     - '**/*.yml'
+    - '**/*.md'
     - '**/.*'
     - 'LICENSE'
 

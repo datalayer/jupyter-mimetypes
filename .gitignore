@@ -105,3 +105,4 @@ dmypy.json
 .DS_Store
 .jupyter_ystore.db
 .dot-env
+.vscode/

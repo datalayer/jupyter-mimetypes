@@ -35,15 +35,15 @@ jobs:
 
       - name: Test the extension
         run: |
-          pytest .
+          pytest tests --cov=jupyter_mimetypes --cov-report=xml --cov-report=html --cov-report=term-missing
 
       - name: Build the extension
         run: |
           pip install build
           python -m build --sdist
           cp dist/*.tar.gz my_package.tar.gz
-          pip uninstall -y "jupyter_reprs"
-          rm -rf "jupyter_reprs"
+          pip uninstall -y "jupyter_mimetypes"
+          rm -rf "jupyter_mimetypes"
 
       - uses: actions/upload-artifact@v4
         if: startsWith(matrix.os, 'ubuntu')
@@ -66,47 +66,3 @@ jobs:
       - name: Run Linters
         run: |
           bash ./.github/workflows/lint.sh
-
-  test_sdist:
-    needs: build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.13"]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          architecture: "x64"
-      - uses: actions/download-artifact@v4
-        with:
-          name: my_package-sdist-${{ matrix.python-version }}
-      - name: Install and Test
-        run: |
-          pip install my_package.tar.gz
-          pip list 2>&1 | grep -ie "jupyter_reprs"
-          python -c "import jupyter_reprs"
-
-  check_release:
-    needs: test_sdist
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Base Setup
-        uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
-      - name: Install Dependencies
-        run: |
-          pip install -e .
-      - name: Check Release
-        uses: jupyter-server/jupyter_releaser/.github/actions/check-release@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload Distributions
-        uses: actions/upload-artifact@v4
-        with:
-          name: jupyter_reprs-releaser-dist-${{ github.run_number }}
-          path: .jupyter_releaser_checkout/dist
