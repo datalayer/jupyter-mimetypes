@@ -24,7 +24,10 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Framework :: Jupyter",
 ]
-dependencies = ["pyarrow"]
+dependencies = [
+  "pyarrow",
+  "typing-extensions",
+]
 
 [project.optional-dependencies]
 test = [
@@ -44,7 +47,6 @@ lint = [
   "mdformat-gfm>=0.3.5",
   "pre_commit",
   "ruff",
-  "typing-extensions",
 ]
 typing = [
   "mypy>=0.990",
